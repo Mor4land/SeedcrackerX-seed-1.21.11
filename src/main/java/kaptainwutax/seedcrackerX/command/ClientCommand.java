@@ -9,13 +9,13 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.*;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
 
 public abstract class ClientCommand {
 
-    public static void sendFeedback(String message, ChatFormatting color) {
+    public static void sendFeedback(String message, ChatFormatting color, boolean overlay) {
         try {
-            Minecraft.getInstance().getChatListener().handleSystemMessage(Component.literal(message).withStyle(color), false);
+            Minecraft.getInstance().player.displayClientMessage(Component.literal(message).withStyle(color), overlay);
         } catch (Exception e) {
         }
     }

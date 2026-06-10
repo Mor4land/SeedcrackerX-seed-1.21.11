@@ -4,10 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import kaptainwutax.seedcrackerX.config.Config;
 import kaptainwutax.seedcrackerX.render.Cuboid;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
-import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.state.level.LevelRenderState;
+import net.minecraft.client.renderer.state.LevelRenderState;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
@@ -37,8 +37,8 @@ public class FinderQueue {
     }
 
     public static void registerEvents() {
-        LevelRenderEvents.END_EXTRACTION.register(levelExtractionContext -> FinderQueue.get().extractCuboids(levelExtractionContext.levelState(), levelExtractionContext.camera()));
-        LevelRenderEvents.END_MAIN.register(levelRenderContext -> FinderQueue.get().renderCuboids(levelRenderContext.bufferSource(), levelRenderContext.poseStack(), levelRenderContext.levelState()));
+        WorldRenderEvents.END_EXTRACTION.register(worldExtractionContext -> FinderQueue.get().extractCuboids(worldExtractionContext.worldState(), worldExtractionContext.camera()));
+        WorldRenderEvents.END_MAIN.register(worldRenderContext -> FinderQueue.get().renderCuboids(worldRenderContext.consumers(), worldRenderContext.matrices(), worldRenderContext.worldState()));
     }
 
     public static FinderQueue get() {
@@ -80,14 +80,12 @@ public class FinderQueue {
         state.setData(CUBOID_SET_KEY, cuboids);
     }
 
-    public void renderCuboids(MultiBufferSource.BufferSource bufferSource, PoseStack poseStack, LevelRenderState state) {
+    public void renderCuboids(MultiBufferSource bufferSource, PoseStack poseStack, LevelRenderState state) {
         Set<Cuboid> cuboids = state.getData(CUBOID_SET_KEY);
         if (cuboids == null) {
             return;
         }
         cuboids.forEach(cuboid -> cuboid.render(poseStack, bufferSource));
-        // fabric did an upsie and now you need to call end batch after the event...
-        bufferSource.endBatch();
     }
 
     public List<Finder.Type> getActiveFinderTypes() {

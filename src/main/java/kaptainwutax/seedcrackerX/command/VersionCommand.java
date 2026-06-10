@@ -7,7 +7,7 @@ import kaptainwutax.seedcrackerX.util.Log;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.ChatFormatting;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.*;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
 
 public class VersionCommand extends ClientCommand {
 
@@ -27,7 +27,7 @@ public class VersionCommand extends ClientCommand {
     private int setVersion(MCVersion version) {
         Config.get().setVersion(version);
         Config.save();
-        ClientCommand.sendFeedback(Log.translate("version.setVersion") + " " + version + ".", ChatFormatting.AQUA);
+        ClientCommand.sendFeedback(Log.translate("version.setVersion") + " " + version + ".", ChatFormatting.AQUA, true);
         return 0;
     }
 

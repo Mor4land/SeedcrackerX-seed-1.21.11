@@ -12,7 +12,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.locale.Language;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.*;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
 
 public class DataCommand extends ClientCommand {
 
@@ -39,7 +39,7 @@ public class DataCommand extends ClientCommand {
     public int clear(CommandContext<FabricClientCommandSource> context) {
         SeedCracker.get().reset();
 
-        sendFeedback(Language.getInstance().getOrDefault("data.clearData"), ChatFormatting.GREEN);
+        sendFeedback(Language.getInstance().getOrDefault("data.clearData"), ChatFormatting.GREEN, false);
         return 0;
     }
 
@@ -47,8 +47,8 @@ public class DataCommand extends ClientCommand {
         DataStorage s = SeedCracker.get().getDataStorage();
         String message = Language.getInstance().getOrDefault("data.collectedBits").formatted((int) s.getBaseBits(), (int) s.getWantedBits());
         String message2 = Language.getInstance().getOrDefault("data.collectedLiftingBits").formatted((int) s.getLiftingBits(), 40);
-        sendFeedback(message, ChatFormatting.GREEN);
-        sendFeedback(message2, ChatFormatting.GREEN);
+        sendFeedback(message, ChatFormatting.GREEN, false);
+        sendFeedback(message2, ChatFormatting.GREEN, false);
         return 0;
     }
 
