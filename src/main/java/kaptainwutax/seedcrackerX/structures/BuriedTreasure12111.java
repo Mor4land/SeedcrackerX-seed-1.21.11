@@ -6,6 +6,8 @@ import com.seedfinding.mccore.state.Dimension;
 import com.seedfinding.mccore.version.MCVersion;
 import com.seedfinding.mccore.version.VersionMap;
 import com.seedfinding.mcfeature.structure.RegionStructure;
+import com.seedfinding.mccore.rand.ChunkRand;
+import com.seedfinding.mccore.util.pos.CPos;
 
 /**
  * Buried Treasure (Зарытый клад) с переопределёнными параметрами для 1.21.11.
@@ -40,5 +42,16 @@ public class BuriedTreasure12111 extends RegionStructure<RegionStructure.Config,
     @Override
     public boolean isValidBiome(Biome biome) {
         return biome == Biomes.BEACH || biome == Biomes.SNOWY_BEACH;
+    }
+
+    @Override
+    public CPos getInRegion(long worldSeed, int regionX, int regionZ, ChunkRand rand) {
+        return new CPos(regionX, regionZ);
+    }
+
+    @Override
+    public boolean canStart(RegionStructure.Data<?> data, long worldSeed, ChunkRand rand) {
+        rand.setRegionSeed(worldSeed, data.regionX, data.regionZ, this.getSalt(), this.getVersion());
+        return rand.nextFloat() < 0.01F;
     }
 }
