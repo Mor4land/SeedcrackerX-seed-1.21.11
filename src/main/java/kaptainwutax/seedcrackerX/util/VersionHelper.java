@@ -1,6 +1,7 @@
 package kaptainwutax.seedcrackerX.util;
 
 import com.seedfinding.mccore.version.MCVersion;
+import kaptainwutax.seedcrackerX.config.Config;
 
 /**
  * Утилитный класс для определения версии мира с учётом
