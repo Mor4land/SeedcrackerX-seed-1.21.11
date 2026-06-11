@@ -37,6 +37,9 @@ public class SeedCracker implements ModInitializer {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientCommands.registerCommands(dispatcher));
 
         Database.fetchSeeds();
+
+        // DEBUG: вывести поведение ChunkRand для отладки лифтинга
+        kaptainwutax.seedcrackerX.util.DebugChunkRand.debugLifting();
     }
 
     public DataStorage getDataStorage() {
