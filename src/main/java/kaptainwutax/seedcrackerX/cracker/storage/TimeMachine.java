@@ -147,7 +147,7 @@ public class TimeMachine {
         // Then lift on 1<<19 with those 1<<18 fixed with % 4 and for nextInt(24)
         // You can even do %8 on 1<<20 (however we included shipwreck so only nextInt(20) so 1<<19 is the max here
         Stream<Long> lowerBitsStream = LongStream.range(0, 1L << 19).boxed().filter(lowerBits -> {
-            ChunkRand rand = new ChunkRand();
+            ChunkRand rand = kaptainwutax.seedcrackerX.util.VersionHelper.isNewWorldgen(kaptainwutax.seedcrackerX.config.Config.get().getVersion()) ? new kaptainwutax.seedcrackerX.util.ChunkRand12111() : new ChunkRand();
             for (UniformStructure.Data<?> data : dataList) {
                 rand.setRegionSeed(lowerBits, data.regionX, data.regionZ, data.feature.getSalt(), Config.get().getVersion());
                 if (rand.nextInt(((UniformStructure<?>)data.feature).getOffset()) % 4 != data.offsetX % 4 ||
@@ -165,7 +165,7 @@ public class TimeMachine {
         );
 
         Stream<Long> strutureSeedStream = seedStream.filter(seed -> {
-            ChunkRand rand = new ChunkRand();
+            ChunkRand rand = kaptainwutax.seedcrackerX.util.VersionHelper.isNewWorldgen(kaptainwutax.seedcrackerX.config.Config.get().getVersion()) ? new kaptainwutax.seedcrackerX.util.ChunkRand12111() : new ChunkRand();
             for (Feature.Data<?> data : cache) {
                 if (!data.testStart(seed, rand)) {
                     return false;
@@ -211,7 +211,7 @@ public class TimeMachine {
                 int fThreadId = threadId;
 
                 SERVICE.submit(() -> {
-                    ChunkRand rand = new ChunkRand();
+                    ChunkRand rand = kaptainwutax.seedcrackerX.util.VersionHelper.isNewWorldgen(kaptainwutax.seedcrackerX.config.Config.get().getVersion()) ? new kaptainwutax.seedcrackerX.util.ChunkRand12111() : new ChunkRand();
 
                     long lower = (long) fThreadId * (1L << 30);
                     long upper = (long) (fThreadId + 1) * (1L << 30);
@@ -456,7 +456,7 @@ public class TimeMachine {
                     }
                 }
             }
-            ChunkRand rand = new ChunkRand();
+            ChunkRand rand = kaptainwutax.seedcrackerX.util.VersionHelper.isNewWorldgen(kaptainwutax.seedcrackerX.config.Config.get().getVersion()) ? new kaptainwutax.seedcrackerX.util.ChunkRand12111() : new ChunkRand();
 
             for (Long seed : this.structureSeeds) {
                 boolean matches = true;
