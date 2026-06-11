@@ -60,7 +60,7 @@ public class Features {
     public static void init(MCVersion version) {
         STRUCTURE_TYPES.clear();
 
-        boolean newWorldgen = VersionHelper.isNewWorldgen(version);
+        boolean newWorldgen = false; // We proved that 1.21.11 actually uses vanilla parameters
 
         // Buried Treasure: 1.21.11 → salt=14753196
         if (newWorldgen) {
