@@ -42,6 +42,7 @@ public class Config {
     public boolean debug = false;
     public boolean antiXrayBypass = true;
     private MCVersion version = MCVersion.latest();
+    private String versionString = "1.21.11";
     public boolean databaseSubmits = false;
     public boolean anonymusSubmits = false;
 
@@ -75,13 +76,26 @@ public class Config {
     }
 
     public MCVersion getVersion() {
-        return version;
+        if ("1.21.11".equals(versionString)) {
+            return MCVersion.v1_21_3;
+        }
+        MCVersion v = MCVersion.fromString(versionString);
+        return v != null ? v : MCVersion.v1_21_3;
     }
 
     public void setVersion(MCVersion version) {
-        if (this.version == version) return;
-        this.version = version;
-        Features.init(version);
+        setVersionString(version.toString());
+    }
+
+    public String getVersionString() {
+        return versionString != null ? versionString : "1.21.11";
+    }
+
+    public void setVersionString(String versionString) {
+        if (versionString.equals(this.versionString)) return;
+        this.versionString = versionString;
+        this.version = getVersion();
+        Features.init(this.version);
     }
 
     public enum RenderType {

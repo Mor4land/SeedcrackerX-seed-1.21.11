@@ -51,7 +51,7 @@ public final class VersionHelper {
      * @return true если версия >= 1.21.11 и требует новой логики
      */
     public static boolean isNewWorldgen(MCVersion version) {
-        return version.isNewerOrEqualTo(THRESHOLD);
+        return "1.21.11".equals(Config.get().getVersionString());
     }
 
     /**

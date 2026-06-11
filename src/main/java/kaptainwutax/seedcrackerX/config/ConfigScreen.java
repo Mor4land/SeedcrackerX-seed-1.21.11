@@ -26,19 +26,14 @@ public class ConfigScreen {
 
     private static final Config config = Config.get();
 
-    private ArrayList<MCVersion> getSupportedVersions() {
-        ArrayList<MCVersion> newerVersions = new ArrayList<>();
+    private ArrayList<String> getSupportedVersions() {
+        ArrayList<String> versions = new ArrayList<>();
+        versions.add("1.21.11");
         for (MCVersion version : MCVersion.values()) {
             if (version.isOlderThan(MCVersion.v1_8)) continue;
-            newerVersions.add(version);
+            versions.add(version.toString());
         }
-        return newerVersions;
-    }
-
-    private MCVersion mcVersionFromString(String version) {
-        MCVersion mcVersion = MCVersion.fromString(version);
-        if (mcVersion == null) return MCVersion.latest();
-        return mcVersion;
+        return versions;
     }
 
     public Screen getConfigScreenByCloth(Screen parent) {
@@ -64,11 +59,11 @@ public class ConfigScreen {
                 .withUnderlined(true)
                 .withItalic(true)))
                 .build());
-        settings.addEntry(eb.startDropdownMenu(Component.translatable("settings.version"), DropdownMenuBuilder.TopCellElementBuilder.of(config.getVersion(), this::mcVersionFromString))
+        settings.addEntry(eb.startDropdownMenu(Component.translatable("settings.version"), DropdownMenuBuilder.TopCellElementBuilder.of(config.getVersionString(), s -> s))
                 .setSelections(getSupportedVersions())
                 .setSuggestionMode(false)
-                .setDefaultValue(config.getVersion())
-                .setSaveConsumer(config::setVersion)
+                .setDefaultValue(config.getVersionString())
+                .setSaveConsumer(config::setVersionString)
                 .build());
 
         settings.addEntry(eb.startTextDescription(Component.literal("==============")).build());
