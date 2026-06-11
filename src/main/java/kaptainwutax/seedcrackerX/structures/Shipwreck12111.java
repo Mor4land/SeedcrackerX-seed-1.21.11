@@ -22,7 +22,7 @@ import com.seedfinding.mcfeature.structure.UniformStructure;
 public class Shipwreck12111 extends UniformStructure<Shipwreck12111> {
 
     public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
-            .add(MCVersion.v1_21, new RegionStructure.Config(26, 6, 198273415));
+            .add(MCVersion.v1_21, new RegionStructure.Config(24, 4, 165745295));
 
     public Shipwreck12111(MCVersion version) {
         super(CONFIGS.getAsOf(version), version);
