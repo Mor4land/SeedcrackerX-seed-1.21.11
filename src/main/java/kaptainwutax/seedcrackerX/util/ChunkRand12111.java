@@ -25,11 +25,12 @@ public class ChunkRand12111 extends ChunkRand {
     }
 
     @Override
-    public void setRegionSeed(long worldSeed, int regionX, int regionZ, int salt, MCVersion version) {
-        super.setRegionSeed(worldSeed, regionX, regionZ, salt, version);
+    public long setRegionSeed(long worldSeed, int regionX, int regionZ, int salt, MCVersion version) {
+        long result = super.setRegionSeed(worldSeed, regionX, regionZ, salt, version);
         
         // В 1.21.11 добавлен дополнительный холостой шаг LCG при генерации позиций структур.
-        // Вызов nextInt() делает ровно один шаг (advance).
         this.nextInt();
+        
+        return result;
     }
 }
