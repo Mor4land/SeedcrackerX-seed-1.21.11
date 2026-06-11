@@ -103,3 +103,9 @@ java {
 	sourceCompatibility = JavaVersion.VERSION_21
 	targetCompatibility = JavaVersion.VERSION_21
 }
+
+tasks.register("runInspection", JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = "kaptainwutax.seedcrackerX.util.ChunkRand12111"
+}
+

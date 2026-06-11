@@ -15,7 +15,21 @@ public class ChunkRand12111 extends ChunkRand {
     private static void initReflection() {
         if (reflectionInitialized || reflectionFailed) return;
         try {
-            xoroshiroField = ChunkRand.class.getDeclaredField("xoroshiro");
+            Class<?> current = ChunkRand.class;
+            while (current != null) {
+                for (Field field : current.getDeclaredFields()) {
+                    if (field.getType().getName().toLowerCase().contains("xoroshiro")) {
+                        xoroshiroField = field;
+                        break;
+                    }
+                }
+                if (xoroshiroField != null) break;
+                current = current.getSuperclass();
+            }
+
+            if (xoroshiroField == null) {
+                throw new NoSuchFieldException("No field of type *Xoroshiro* found in ChunkRand hierarchy.");
+            }
             xoroshiroField.setAccessible(true);
             
             Class<?> xoroshiroClass = xoroshiroField.getType();
@@ -32,9 +46,19 @@ public class ChunkRand12111 extends ChunkRand {
             if (hiField != null) hiField.setAccessible(true);
             
             reflectionInitialized = true;
-            SeedCracker.LOGGER.info("[ChunkRand12111] Рефлексия Xoroshiro успешно инициализирована!");
+            SeedCracker.LOGGER.info("[ChunkRand12111] Рефлексия Xoroshiro успешно инициализирована! Поле: " + xoroshiroField.getName());
         } catch (Exception e) {
             SeedCracker.LOGGER.error("[ChunkRand12111] Ошибка инициализации рефлексии Xoroshiro: " + e.getMessage());
+            
+            // Если не нашли, выведем все поля для отладки:
+            Class<?> dbg = ChunkRand.class;
+            while(dbg != null) {
+                for(Field f : dbg.getDeclaredFields()) {
+                    SeedCracker.LOGGER.error("DEBUG FIELD: class=" + dbg.getSimpleName() + " name=" + f.getName() + " type=" + f.getType().getSimpleName());
+                }
+                dbg = dbg.getSuperclass();
+            }
+            
             reflectionFailed = true;
         }
     }
