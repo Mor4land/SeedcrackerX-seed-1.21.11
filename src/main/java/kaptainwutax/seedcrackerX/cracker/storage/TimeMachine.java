@@ -47,7 +47,7 @@ public class TimeMachine {
 
     private final LCG inverseLCG = LCG.JAVA.combine(-2);
     // 1.21.11: дополнительный шаг LCG в расчёте regionSeed → нужно откатить на 3 шага
-    private final LCG inverseLCG12111 = LCG.JAVA.combine(-3);
+    private final LCG inverseLCG12111 = LCG.JAVA.combine(-2);
     public boolean isRunning = false;
     public boolean shouldTerminate = false;
     public List<Integer> pillarSeeds = null;
@@ -142,6 +142,18 @@ public class TimeMachine {
             }
         }
         Log.warn("tmachine.startLifting", dataList.size());
+        
+        // DEBUG: проверить, не выходят ли координаты за пределы допустимого offset
+        for (UniformStructure.Data<?> data : dataList) {
+            int maxOffset = ((UniformStructure<?>)data.feature).getOffset();
+            if (data.offsetX >= maxOffset || data.offsetZ >= maxOffset) {
+                kaptainwutax.seedcrackerX.SeedCracker.LOGGER.error("INVALID STRUCTURE DETECTED! Type: {}, Region: ({},{}), Offset: ({},{}), Max allowed offset: {}",
+                        data.feature.getName(), data.regionX, data.regionZ, data.offsetX, data.offsetZ, maxOffset - 1);
+            } else {
+                kaptainwutax.seedcrackerX.SeedCracker.LOGGER.info("Valid structure: {}, Region: ({},{}), Offset: ({},{})",
+                        data.feature.getName(), data.regionX, data.regionZ, data.offsetX, data.offsetZ);
+            }
+        }
 
         // You could first lift on 1L<<18 with %2 since that would be a smaller range
         // Then lift on 1<<19 with those 1<<18 fixed with % 4 and for nextInt(24)

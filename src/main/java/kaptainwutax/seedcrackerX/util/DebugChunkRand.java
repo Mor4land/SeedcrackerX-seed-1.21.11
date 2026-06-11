@@ -10,8 +10,14 @@ import kaptainwutax.seedcrackerX.SeedCracker;
  */
 public class DebugChunkRand {
 
+    public static void main(String[] args) {
+        // Заглушка для логгера, если мы запускаем вне майнкрафта
+        System.out.println("Starting debug script...");
+        debugLifting();
+    }
+
     public static void debugLifting() {
-        SeedCracker.LOGGER.info("=== DEBUG ChunkRand Lifting ===");
+        System.out.println("=== DEBUG ChunkRand Lifting ===");
         
         // Тест: для заданных regionX, regionZ и salt, 
         // покажем что выдает nextInt() с и без доп. шага
@@ -36,18 +42,16 @@ public class DebugChunkRand {
             int ox2 = rand2.nextInt(offset);
             int oz2 = rand2.nextInt(offset);
             
-            SeedCracker.LOGGER.info("region({},{}) salt={}: WITHOUT extra step: offset=({},{}) | WITH extra step: offset=({},{})", 
-                rx, rz, salt, ox1, oz1, ox2, oz2);
+            System.out.println("region(" + rx + "," + rz + ") salt=" + salt + ": WITHOUT extra step: offset=(" + ox1 + "," + oz1 + ") | WITH extra step: offset=(" + ox2 + "," + oz2 + ")");
         }
         
         // Также выведем все поля ChunkRand для понимания внутренней структуры
-        SeedCracker.LOGGER.info("=== ChunkRand class hierarchy ===");
+        System.out.println("=== ChunkRand class hierarchy ===");
         Class<?> cls = ChunkRand.class;
         while (cls != null) {
-            SeedCracker.LOGGER.info("Class: {} (superclass: {})", cls.getName(), 
-                cls.getSuperclass() != null ? cls.getSuperclass().getName() : "null");
+            System.out.println("Class: " + cls.getName() + " (superclass: " + (cls.getSuperclass() != null ? cls.getSuperclass().getName() : "null") + ")");
             for (java.lang.reflect.Field f : cls.getDeclaredFields()) {
-                SeedCracker.LOGGER.info("  field: {} type={}", f.getName(), f.getType().getName());
+                System.out.println("  field: " + f.getName() + " type=" + f.getType().getName());
             }
             for (java.lang.reflect.Method m : cls.getDeclaredMethods()) {
                 if (m.getName().contains("Region") || m.getName().contains("region") || 
@@ -57,7 +61,7 @@ public class DebugChunkRand {
                         if (params.length() > 0) params.append(", ");
                         params.append(p.getSimpleName());
                     }
-                    SeedCracker.LOGGER.info("  method: {} {}({})", m.getReturnType().getSimpleName(), m.getName(), params);
+                    System.out.println("  method: " + m.getReturnType().getSimpleName() + " " + m.getName() + "(" + params + ")");
                 }
             }
             cls = cls.getSuperclass();
